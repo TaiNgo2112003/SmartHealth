@@ -1,4 +1,5 @@
 .conversation {
+	background-image: url('file:///C:/Users/taing/OneDrive/M%C3%A1y%20t%C3%ADnh/FreeGPT-4/client/img/logoHC.png');
 	width: max(100%);
 	height: max(100%);
 	display: flex;
@@ -31,7 +32,7 @@
 @media screen and (max-width: 990px) {
 	.conversation .user-input {
 		margin-top: 0;
-		}
+	}
 }
 
 .conversation .user-input input {
@@ -84,14 +85,17 @@
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: center;
-	}
+	background-size: cover; /* Điều chỉnh kích thước ảnh để bao phủ toàn bộ div */
+	background-position: center; /* Canh giữa ảnh */
+	background-repeat: no-repeat; /* Ngăn không cho ảnh lặp lại */
+}
 
 @media screen and (max-width: 990px) {
 	.box.input-box {
 		border-top-left-radius: unset;
 		border-top-right-radius: unset;
 		border-top: var(--blur-border);
-		}		
+	}
 }
 
 #send-button {

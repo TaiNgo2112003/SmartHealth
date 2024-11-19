@@ -1,0 +1,53 @@
+.header {
+    background-color: var(--header-bg); /* Sử dụng biến màu nền */
+    color: var(--header-text); /* Sử dụng biến màu văn bản */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5px;
+}
+
+.logo img {
+    height: 150px;
+    width: auto;
+}
+
+.site-title {
+    margin: 0;
+    font-size: 15px;
+}
+
+.nav {
+    display: flex;
+}
+
+.nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-list li {
+    margin-left: 20px;
+}
+
+.nav-list a {
+    color: var(--link-color); /* Sử dụng biến màu liên kết */
+    text-decoration: none;
+    font-size: 14px;
+    padding: 5px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.nav-list a:hover {
+    background-color: var(--link-hover-bg); /* Sử dụng biến màu nền khi hover */
+    color: var(--link-hover-color); /* Sử dụng biến màu chữ khi hover */
+    border-radius: 4px;
+}

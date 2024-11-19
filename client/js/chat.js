@@ -14,8 +14,8 @@ const box_conversations = document.querySelector(`.top`);
 const spinner = box_conversations.querySelector(".spinner");
 const stop_generating = document.querySelector(`.stop-generating`);
 const send_button = document.querySelector(`#send-button`);
-const user_image = `<img src="${url_prefix}/assets/img/user.png" alt="User Avatar">`;
-const gpt_image = `<img src="${url_prefix}/assets/img/gpt.png" alt="GPT Avatar">`;
+const user_image = `<img src="${url_prefix}/assets/img/Medical01.png" alt="User Avatar">`;
+const gpt_image = `<img src="${url_prefix}/assets/img/Medical.png" alt="GPT Avatar">`;
 let prompt_lock = false;
 
 hljs.addPlugin(new CopyButtonPlugin());

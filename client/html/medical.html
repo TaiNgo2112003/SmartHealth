@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath/css/texmath.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+    <link rel="manifest" href="{{ url_for('bp.static', filename='img/site.webmanifest') }}" />
+    <title>Medical Products</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('bp.static', filename='img/Healthcare logo - Made with PosterMyWall.png') }}" alt="Logo">
+            </div>
+            <h4>HỆ THỐNG TƯ VẤN Y TẾ THÔNG MINH</h4>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="#home">Trang Chủ</a></li>
+                    <li><a href="#services">Dịch Vụ</a></li>
+                    <li><a href="#about">Giới Thiệu</a></li>
+                    <li><a href="#contact">Liên Hệ</a></li>
+                    <li><a href="{{ url_for('bp.medical_products') }}">Lưu Trữ Vật Tư Y Tế</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div  class="invoice-link-search">
+            <h1>Medical Products</h1>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search for medicine...">
+                <button onclick="searchMedicine()">Search</button>
+            </div>
+        </div>
+        
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+        <div class="product-list">
+            {% for product in products %}
+            <div class="product-item">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <p>Price: ${{ product.unit_price }}</p>
+                <p>Available: {{ product.quantity }}</p>
+                <div class="quantity-controls">
+                    <button onclick="updateQuantity('{{ product.id }}', -1)">-</button>
+                    <input type="number" id="quantity-{{ product.id }}" value="0" min="0">
+                    <button onclick="updateQuantity('{{ product.id }}', 1)">+</button>
+                </div>
+                <button onclick="addToInvoice('{{ product.id }}')">Add to Invoice</button>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <a href="{{ url_for('bp.invoice_page') }}" class="invoice-link">Go to Invoice</a>
+
+    <script>
+        function updateQuantity(productId, change) {
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            let currentQuantity = parseInt(quantityInput.value);
+            if (currentQuantity + change >= 1) {
+                quantityInput.value = currentQuantity + change;
+            }
+        }
+    
+        function addToInvoice(productId) {
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            const quantity = quantityInput.value;
+            
+            fetch(`/add_to_invoice`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId, quantity })
+            }).then(response => {
+                if (response.ok) {
+                    alert('Added to invoice');
+                    // Reset quantity input to 0
+                    quantityInput.value = 0;
+                }
+            });
+        }
+    
+        function searchMedicine() {
+            const query = document.getElementById('search-input').value;
+            window.location.href = `/medical?search=${query}`;
+        }
+    </script>
+    
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="f_widget company_widget wow fadeInLeft" data-wow-delay="0.2s">
+                        <form action="#" class="f_subscribe_two mailchimp" method="post" novalidate>
+                            <input type="email" name="EMAIL" class="form-control memail" placeholder="Email" required>
+                            <button class="btn btn_get btn_get_two" type="submit">Subscribe</button>
+                            <p class="mchimp-errmessage" style="display: none;"></p>
+                            <p class="mchimp-sucmessage" style="display: none;"></p>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="f_widget social-widget pl_70 wow fadeInLeft" data-wow-delay="0.8s">
+                        <h3 class="f-title f_600 t_color f_size_18">Team Solutions</h3>
+                        <div class="f_social_icon">
+                            <a href="#" class="fab fa-facebook"></a>
+                            <a href="#" class="fab fa-twitter"></a>
+                            <a href="#" class="fab fa-linkedin"></a>
+                            <a href="#" class="fab fa-pinterest"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer_bg">
+            <div class="footer_bg_one"></div>
+            <div class="footer_bg_two"></div>
+        </div>
+    </footer>
+</body>
+</html>

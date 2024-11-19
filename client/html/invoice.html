@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Invoice</h1>
+    <div class="invoice-list">
+        {% for item in invoice_items %}
+        <div class="invoice-item">
+            <h3>{{ item.name }}</h3>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Total: ${{ item.total_price }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Form nhắc nhở quan trọng cho bệnh nhân -->
+    <form id="invoice-form" method="POST">
+        <!-- Thời gian uống thuốc -->
+        <div class="checkbox-group">
+            <h3>Thời gian uống thuốc:</h3>
+            <label>
+                <input type="checkbox" name="medication_time" value="morning"> Sáng
+            </label>
+            <label>
+                <input type="checkbox" name="medication_time" value="noon"> Trưa
+            </label>
+            <label>
+                <input type="checkbox" name="medication_time" value="afternoon"> Chiều
+            </label>
+        </div>
+
+        <!-- Liều lượng thuốc -->
+        <div class="dosage-group">
+            <h3>Liều lượng thuốc:</h3>
+            <input type="text" name="dosage" placeholder="Nhập liều lượng thuốc..." required>
+        </div>
+
+        <!-- Nhắc nhở trước hoặc sau khi ăn -->
+        <div class="food-group">
+            <h3>Uống thuốc:</h3>
+            <label>
+                <input type="radio" name="food_time" value="before_food"> Trước khi ăn
+            </label>
+            <label>
+                <input type="radio" name="food_time" value="after_food"> Sau khi ăn
+            </label>
+        </div>
+
+        <!-- Thời gian tái khám -->
+        <div class="revisit-group">
+            <h3>Thời gian tái khám:</h3>
+            <input type="date" name="revisit_date" required>
+        </div>
+
+        <!-- Chú ý đặc biệt -->
+        <div class="note-group">
+            <h3>Chú ý đặc biệt:</h3>
+            <textarea name="note" placeholder="Nhập các lưu ý đặc biệt cho bệnh nhân..."></textarea>
+        </div>
+
+        <!-- Nút xác nhận và in -->
+        <button type="button" onclick="confirmInvoice()">Confirm and Print</button>
+    </form>
+
+    <!-- Thông báo lỗi hoặc thành công -->
+    <div id="message" style="color: red; display: none;"></div>
+
+    <script>
+ function confirmInvoice() {
+    const form = document.getElementById('invoice-form');
+    const formData = new FormData(form);
+
+    fetch('/confirm_invoice', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.blob();
+        } else {
+            return response.text().then(text => { throw new Error(text); });
+        }
+    })
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'invoice.docx';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        alert('Invoice confirmed and printed');
+        window.location.href = '/medical';
+    })
+    .catch(error => {
+        document.getElementById('message').textContent = error.message;
+        document.getElementById('message').style.display = 'block';
+        console.error('Error:', error);
+        alert('Failed to confirm invoice: ' + error.message);  // Cập nhật lỗi chi tiết
+    });
+}
+
+    </script>
+</body>
+</html>

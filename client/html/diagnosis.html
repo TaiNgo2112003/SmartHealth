@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Câu hỏi từng bước</title>
+    <link rel="stylesheet" href="{{ url_for('bp.static', filename='css/diagnosis.css') }}" />
+    <script src="{{ url_for('bp.static', filename='js/script.js') }}"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+</head>
+<head>
+    <style>
+        .question {
+            display: none; /* Ẩn các câu hỏi mặc định */
+        }
+
+        .answered {
+            opacity: 0.5; /* Mờ câu hỏi đã trả lời */
+        }
+
+        #map {
+            width: 100%;
+            height: 300px;
+            display: none; /* Ẩn bản đồ mặc định */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form id="question-form">
+            <div id="question1" class="question">
+                <h3>Câu hỏi 1: Bạn đang trả lời cho bản thân hay người khác?</h3>
+                <div>
+                    <label>
+                        <input type="radio" name="responsibility" value="myself" onchange="answerQuestion(1)"> Tôi
+                    </label>
+                    <label>
+                        <input type="radio" name="responsibility" value="someone_else" onchange="answerQuestion(1)"> Người khác
+                    </label>
+                </div>
+            </div>
+            <div id="question2" class="question">
+                <h3>Câu hỏi 2: Bạn bao nhiêu tuổi?</h3>
+                <input type="number" id="age" name="age" placeholder="Tuổi" onchange="answerQuestion(2)">
+            </div>
+            <div id="question3" class="question">
+                <h3>Câu hỏi 3: Bạn có muốn xem các gợi ý chăm sóc gần vị trí của bạn không?</h3>
+                <div>
+                    <label>
+                        <input type="radio" name="care_recommendation" value="yes" onchange="toggleMap(this); answerQuestion(3)"> Có
+                    </label>
+                    <label>
+                        <input type="radio" name="care_recommendation" value="no" onchange="toggleMap(this); answerQuestion(3)" checked> Không
+                    </label>
+                </div>
+            </div>
+            <div id="map"></div>
+            <div id="question4" class="question">
+                <h1>Nhập triệu chứng</h1>
+                <div>
+                    <label for="symptomInput1">Triệu chứng 1</label>
+                    <input type="text" id="symptomInput1" name="symptomInput1" placeholder="Nhập triệu chứng 1...">
+                </div>
+                <div>
+                    <label for="symptomInput2">Triệu chứng 2</label>
+                    <input type="text" id="symptomInput2" name="symptomInput2" placeholder="Nhập triệu chứng 2...">
+                </div>
+                <div>
+                    <label for="symptomInput3">Triệu chứng 3</label>
+                    <input type="text" id="symptomInput3" name="symptomInput3" placeholder="Nhập triệu chứng 3...">
+                </div>
+                <div>
+                    <label for="symptomInput4">Triệu chứng 4</label>
+                    <input type="text" id="symptomInput4" name="symptomInput4" placeholder="Nhập triệu chứng 4...">
+                </div>
+                <div>
+                    <label for="symptomInput5">Triệu chứng 5</label>
+                    <input type="text" id="symptomInput5" name="symptomInput5" placeholder="Nhập triệu chứng 5...">
+                </div>
+                <button type="submit">Gửi</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('question-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Thu thập dữ liệu từ 5 ô nhập triệu chứng
+            const symptoms = [
+                document.getElementById('symptomInput1').value,
+                document.getElementById('symptomInput2').value,
+                document.getElementById('symptomInput3').value,
+                document.getElementById('symptomInput4').value,
+                document.getElementById('symptomInput5').value
+            ].filter(symptom => symptom); // Loại bỏ các ô trống
+            
+            // Gửi dữ liệu đến Flask qua POST
+            fetch('/diagnosis', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ symptoms: symptoms }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert("Dự đoán bệnh: " + data.predicted_disease.join(", "));
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+        <script>
+            // Hiện câu hỏi đầu tiên khi tải trang
+            window.onload = function() {
+                document.getElementById('question1').style.display = 'block';
+            };
+            // Xử lý câu trả lời và hiện câu hỏi tiếp theo
+            function answerQuestion(questionNumber) {
+                const currentQuestion = document.getElementById('question' + questionNumber);
+                currentQuestion.classList.add('answered');
+    
+                // Ẩn câu hỏi hiện tại
+               // currentQuestion.style.display = 'none';
+    
+                // Hiện câu hỏi tiếp theo
+                const nextQuestion = document.getElementById('question' + (questionNumber + 1));
+                if (nextQuestion) {
+                    nextQuestion.style.display = 'block';
+                }
+            }
+        </script>
+</body>
+
+    <!-- scripts -->
+    <script src="{{ url_for('bp.static', filename='js/icons.js') }}"></script>
+    <script src="{{ url_for('bp.static', filename='js/script.js') }}"></script>
+    
+
+    
+    <footer class="new_footer_area bg_color">
+        <div class="new_footer_top">
+            <div class="container">
+                <div class="row">
+                    <center>
+                        <h2>HỆ THỐNG TƯ VẤN Y TẾ THÔNG MINH </h2>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="f_widget company_widget wow fadeInLeft" data-wow-delay="0.2s">
+                                <form action="#" class="f_subscribe_two mailchimp" method="post" novalidate>
+                                    <input type="email" name="EMAIL" class="form-control memail" placeholder="Email" required>
+                                    <button class="btn btn_get btn_get_two" type="submit">Subscribe</button>
+                                    <p class="mchimp-errmessage" style="display: none;"></p>
+                                    <p class="mchimp-sucmessage" style="display: none;"></p>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="f_widget social-widget pl_70 wow fadeInLeft" data-wow-delay="0.8s">
+                                <h3 class="f-title f_600 t_color f_size_18">Team Solutions</h3>
+                                <div class="f_social_icon">
+                                    <a href="#" class="fab fa-facebook"></a>
+                                    <a href="#" class="fab fa-twitter"></a>
+                                    <a href="#" class="fab fa-linkedin"></a>
+                                    <a href="#" class="fab fa-pinterest"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </center>
+                </div>
+            </div>
+            <div class="footer_bg">
+                <div class="footer_bg_one"></div>
+                <div class="footer_bg_two"></div>
+            </div>
+        </div>
+        <div class="footer_bottom">
+            <center>
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-sm-7">
+                            <p class="mb-0 f_400">© Y TẾ THÔNG MINH Inc. 2024 All rights reserved.</p>
+                        </div>
+                        <div class="col-lg-6 col-sm-5 text-right">
+                            <p>Made with <i class="icon_heart"></i> in <a href="https://www.facebook.com/bin.map211" target="_blank">TAINGO</a></p>
+                        </div>
+                    </div>
+                </div>
+            </center>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,157 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-		<meta name="full-screen" content="yes" />
-		<meta name="description" content="A conversational AI system that listens, learns, and challenges" />
-		<meta property="og:title" content="ChatGPT" />
-		<meta property="og:image" content="https://openai.com/content/images/2022/11/ChatGPT.jpg" />
-		<meta
-			property="og:description"
-			content="A conversational AI system that listens, learns, and challenges" />
-		<meta property="og:url" content="https://chat.acy.dev" />
-		<link rel="stylesheet" href="{{ url_for('bp.static', filename='css/style.css') }}" />
-		<link
-			rel="apple-touch-icon"
-			sizes="180x180"
-			href="{{ url_for('bp.static', filename='img/apple-touch-icon.png') }}" />
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="32x32"
-			href="{{ url_for('bp.static', filename='img/favicon-32x32.png') }}" />
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="16x16"
-			href="{{ url_for('bp.static', filename='img/favicon-16x16.png') }}" />
-		<link rel="manifest" href="{{ url_for('bp.static', filename='img/site.webmanifest') }}" />
-		<link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/markdown-it-texmath/texmath.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath/css/texmath.min.css">
-		<title>FreeGPT</title>
-		</head>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="full-screen" content="yes" />
+    <meta name="description" content="A conversational AI system that listens, learns, and challenges" />
+    <meta property="og:title" content="ChatGPT" />
+    <meta property="og:image" content="https://openai.com/content/images/2022/11/ChatGPT.jpg" />
+    <meta property="og:description" content="A conversational AI system that listens, learns, and challenges" />
+    <meta property="og:url" content="https://chat.acy.dev" />
+    <link rel="stylesheet" href="{{ url_for('bp.static', filename='css/style.css') }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('bp.static', filename='img/apple-touch-icon.png') }}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('bp.static', filename='img/faviconMedical.png') }}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('bp.static', filename='img/faviconMedical.png') }}" />
+    <link rel="manifest" href="{{ url_for('bp.static', filename='img/site.webmanifest') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/markdown-it-texmath/texmath.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath/css/texmath.min.css">
+    <title>Y tế thông minh</title>
+</head>
 
-	<body data-urlprefix="{{ url_prefix}}">
-		<div class="main-container">
-			<div class="box sidebar">
-				<button class="button" id="sidebar-button" onclick="new_conversation()">
-					<i class="fa-regular fa-plus"></i>
-					<span>{{_('New Conversation')}}</span>
+<header class="header">
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('bp.static', filename='img/Healthcare logo - Made with PosterMyWall.png') }}" alt="Logo">
+        </div>
+        <h4><strong>HỆ THỐNG TƯ VẤN Y TẾ THÔNG MINH</strong></h4>
+        <nav class="nav">
+            <ul class="nav-list" style="list-style-type: none; padding: 0; margin: 0; display: flex; justify-content: center;">
+              <li style="margin-right: 15px;">
+                <a href="#">Home</a>
+              </li>
+              <li class="dropdown" style="position: relative;">
+                <a href="#">Dịch Vụ</a>
+                <ul class="dropdown-content" style="display: none; position: absolute; background-color: #f8f9fa; min-width: 160px; box-shadow: 0px 8px 16px rgba(0,0,0,0.1); list-style-type: none; padding: 0; margin: 0;">
+                  <li><a href="{{ url_for('bp.appointment_booking') }}">Đặt lịch khám</a></li>
+                  <li><a href="{{ url_for('bp.diagnosis') }}">Chẩn đoán bệnh</a></li>
+                  <li><a href="#">Báo cáo y tế</a></li>
+                  <li><a href="#">Quản lý</a></li>
+                </ul>
+              </li>
+              <li style="margin-right: 15px;">
+                <a href="#">Contact</a>
+              </li>
+              <li><a href="#about">Giới Thiệu</a></li>
+              <li><a href="{{ url_for('bp.medical_products') }}">Lưu Trữ Vật Tư Y Tế</a></li>
+            </ul>
+          </nav>
+          <script>
+            document.querySelector('.dropdown').addEventListener('mouseover', function() {
+              this.querySelector('.dropdown-content').style.display = 'block';
+            });
+            document.querySelector('.dropdown').addEventListener('mouseout', function() {
+              this.querySelector('.dropdown-content').style.display = 'none';
+            });
+          </script>
+    </div>
+</header>
+<body data-urlprefix="{{ url_prefix }}">
+
+    <div class="main-container">
+        <div class="box sidebar">
+            <img src="{{ url_for('bp.static', filename='img/logoHC.png') }}" alt="Logo HC" class="sidebar-image">
+
+            <button class="button" id="sidebar-button" onclick="new_conversation()">
+                <i class="fa-regular fa-plus"></i>
+                <span>{{_('New Conversation')}}</span>
+            </button>
+			<br>
+			<br>
+			<h4><strong>History of conversation</strong></h4>
+
+            <div class="top">
+                <div class="spinner"></div>
+            </div>
+            <div class="sidebar-footer">
+                <!-- <button class="button" onclick="delete_conversations()">
+                    <i class="fa-regular fa-trash"></i>
+                    <span>{{_('Clear Conversations')}}</span>
+                </button> -->
+                <div class="settings-container">
+                    <div class="field">
+                        <span>{{_('Model')}}</span>
+                        <select class="dropdown" name="model" id="model">
+                            <option value="gpt-3.5-turbo" selected>GPT-3.5-turbo</option>
+                            <option value="gpt-4">GPT-4</option>
+                            <option value="llama2-70b">LLaMA2-70b</option>
+                            <option value="gemini-pro">Gemini-pro</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <span>{{_('Provider')}}</span>
+                        <select class="dropdown" name="provider" id="provider">
+                            <option value="g4f.Provider.Auto" selected>Auto</option>
+                            <option value="g4f.Provider.ChatgptLogin">ChatGPT Login</option>
+                            <option value="g4f.Provider.Bing">Bing</option>
+                            <option value="g4f.Provider.Llama2">Llama2</option>
+                            <option value="g4f.Provider.Liaobots">Liaobots</option>
+                            <option value="g4f.Provider.Phind">Phind</option>
+                            <option value="g4f.Provider.You">You</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <span>{{_('Jailbreak')}}</span>
+                        <select class="dropdown" name="jailbreak" id="jailbreak">
+                            <option value="default" selected>{{_('Default')}}</option>
+                            <option value="gpt-dan-11.0">{{_('DAN')}}</option>
+                            <option value="gpt-evil">{{_('Evil')}}</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <span>{{_('Language')}}</span>
+                        <select class="dropdown" id="language" onchange="changeLanguage(this.value)"></select>
+                    </div>
+                    <div class="field checkbox">
+                        <span>{{_('Web Access')}}</span>
+                        <input type="checkbox" id="switch" />
+                        <label for="switch"></label>
+                    </div>
+                    <div class="field checkbox">
+                        <span>{{_('Dark Mode')}}</span>
+                        <input type="checkbox" id="theme-toggler" />
+                        <label for="theme-toggler"></label>
+                    </div>
+                    <div class="field checkbox fullscreen">
+                        <span>{{_('Fullscreen Mode')}}</span>
+                        <input type="checkbox" id="fullscreen-toggle" />
+                        <label for="fullscreen-toggle"></label>
+                    </div>
+                    <!-- <div class="field checkbox">
+                        <span>{{_('Highlight')}}</span>
+                        <input type="checkbox" id="hl-toggle" />
+                        <label for="hl-toggle"></label>
+                    </div> -->
+                </div>
+                <a class="info" href="https://github.com/VadimBoev/freegpt-webui-v2" target="_blank">
+                    <i class="fa-brands fa-github"></i>
+                    <span class="conversation-title"> {{_('Version')}}: 0.8 </span>
+                </a>
+            </div>
+        </div>
+		<div class="conversation">
+			<div class="stop-generating stop-generating-hidden">
+				<button class="button" id="cancelButton">
+					<span>{{_('Stop Generating')}}</span>
 				</button>
-				<div class="top">					
-					<div class="spinner"></div>
-				</div>
-				<div class="sidebar-footer">
-					<!-- <button class="button" onclick="delete_conversations()">
-						<i class="fa-regular fa-trash"></i>
-						<span>{{_('Clear Conversations')}}</span>
-					</button> -->
-						<div class="settings-container">
-								<div class="field">
-									<span>{{_('Model')}}</span>
-									<select class="dropdown" name="model" id="model">
-										<option value="gpt-3.5-turbo" selected="">GPT-3.5-turbo</option>
-										<option value="gpt-4">GPT-4</option>
-										<option value="llama2-70b">LLaMA2-70b</option>
-										<option value="gemini-pro">Gemini-pro</option>
-									</select>
-								</div>
-								<div class="field">
-									<span>{{_('Provider')}}</span>
-										<select class="dropdown" name="provider" id="provider">
-											<option value="g4f.Provider.Auto" selected>Auto</option>
-											<option value="g4f.Provider.ChatgptLogin">ChatGPT Login</option>
-											<option value="g4f.Provider.Bing">Bing</option>											
-											<option value="g4f.Provider.Llama2">Llama2</option>
-											<option value="g4f.Provider.Liaobots">Liaobots</option>
-											<option value="g4f.Provider.Phind">Phind</option>
-											<option value="g4f.Provider.You">You</option>																					
-									</select>
-								</div>
-								<div class="field">
-									<span>{{_('Jailbreak')}}</span>
-										<select class="dropdown" name="jailbreak" id="jailbreak">
-										<option value="default" selected>{{_('Default')}}</option>
-										<option value="gpt-dan-11.0">{{_('DAN')}}</option>
-										<option value="gpt-evil">{{_('Evil')}}</option>
-									</select>
-								</div>
-								<div class="field">
-									<span>{{_('Language')}}</span>
-									<select
-									class="dropdown"
-									id="language"
-									onchange="changeLanguage(this.value)"></select>
-								</div>
-								<div class="field checkbox">
-									<span>{{_('Web Access')}}</span>									
-									<input type="checkbox" id="switch" />
-									<label for="switch"></label>
-								</div>
-								<div class="field checkbox">
-									<span>{{_('Dark Mode')}}</span>
-									<input type="checkbox" id="theme-toggler" />
-									<label for="theme-toggler"></label>
-								</div>
-								<div class="field checkbox fullscreen">
-									<span>{{_('Fullscreen Mode')}}</span>
-									<input type="checkbox" id="fullscreen-toggle" />
-									<label for="fullscreen-toggle"></label>
-								</div>
-								<!-- <div class="field checkbox">
-									<span>{{_('Highlight')}}</span>
-									<input type="checkbox" id="hl-toggle" />
-									<label for="hl-toggle"></label>
-								</div> -->			
+			</div>
+			<div class="box" id="messages"></div>
+			<div class="user-input">
+				<div class="box input-box background-image">
+					<textarea
+						id="message-input"
+						placeholder="{{_('Ask a question')}}"
+						cols="30"
+						rows="10"
+						style="white-space: pre-wrap"></textarea>
+					<div id="send-button">
+						<i class="fa-regular fa-paper-plane-top"></i>
 					</div>
-					<a class="info" href="https://github.com/VadimBoev/freegpt-webui-v2" target="_blank">
-						<i class="fa-brands fa-github"></i>
-						<span class="conversation-title"> {{_('Version')}}: 0.8 </span>
-					</a>
 				</div>
 			</div>
-			<div class="conversation">
-				<div class="stop-generating stop-generating-hidden">
-					<button class="button" id="cancelButton">
-						<span>{{_('Stop Generating')}}</span>
-					</button>
-				</div>
-				<div class="box" id="messages"></div>
-				<div class="user-input">
-					<div class="box input-box">
-						<textarea
-							id="message-input"
-							placeholder="{{_('Ask a question')}}"
-							cols="30"
-							rows="10"
-							style="white-space: pre-wrap"></textarea>
-						<div id="send-button">
-							<i class="fa-regular fa-paper-plane-top"></i>
+		</div>
+    </div>
+    <div class="menu-button">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+    <!-- scripts -->
+    <script>window.conversation_id = "{{ chat_id }}";</script>
+    <script src="{{ url_for('bp.static', filename='js/icons.js') }}"></script>
+    <script src="{{ url_for('bp.static', filename='js/chat.js') }}" defer></script>
+    <script src="{{ url_for('bp.static', filename='js/markdown-it.min.js') }}"></script>
+    <script src="{{ url_for('bp.static', filename='js/highlight.min.js') }}"></script>
+    <script src="{{ url_for('bp.static', filename='js/highlightjs-copy.min.js') }}"></script>
+    <script src="{{ url_for('bp.static', filename='js/theme-toggler.js') }}"></script>
+    <script src="{{ url_for('bp.static', filename='js/sidebar-toggler.js') }}"></script>
+    <script src="{{ url_for('bp.static', filename='js/change-language.js') }}"></script>
+    <script src="{{ url_for('bp.static', filename='js/fullscreen-toggle.js') }}"></script>
+</body>
+<footer class="new_footer_area bg_color">
+	<div class="new_footer_top">
+		<div class="container">
+			<div class="row">
+				<center>
+					<h2>HỆ THỐNG TƯ VẤN Y TẾ THÔNG MINH </h2>
+					<div class="col-lg-3 col-md-6">
+						<div class="f_widget company_widget wow fadeInLeft" data-wow-delay="0.2s">
+							<form action="#" class="f_subscribe_two mailchimp" method="post" novalidate>
+								<input type="email" name="EMAIL" class="form-control memail" placeholder="Email" required>
+								<button class="btn btn_get btn_get_two" type="submit">Subscribe</button>
+								<p class="mchimp-errmessage" style="display: none;"></p>
+								<p class="mchimp-sucmessage" style="display: none;"></p>
+							</form>
 						</div>
 					</div>
-				</div>
-				
+					<div class="col-lg-3 col-md-6">
+						<div class="f_widget social-widget pl_70 wow fadeInLeft" data-wow-delay="0.8s">
+							<h3 class="f-title f_600 t_color f_size_18">Team Solutions</h3>
+							<div class="f_social_icon">
+								<a href="#" class="fab fa-facebook"></a>
+								<a href="#" class="fab fa-twitter"></a>
+								<a href="#" class="fab fa-linkedin"></a>
+								<a href="#" class="fab fa-pinterest"></a>
+							</div>
+						</div>
+					</div>
+				</center>
+			
 			</div>
 		</div>
-		<div class="menu-button">
-			<i class="fa-solid fa-bars"></i>
+		<div class="footer_bg">
+			<div class="footer_bg_one"></div>
+			<div class="footer_bg_two"></div>
 		</div>
-				   
-		<!-- scripts -->
-		
-		<script>window.conversation_id = "{{ chat_id }}";</script>
-		<script src="{{ url_for('bp.static', filename='js/icons.js') }}"></script>
-		<script src="{{ url_for('bp.static', filename='js/chat.js') }}" defer></script>
-		<script src="{{ url_for('bp.static', filename='js/markdown-it.min.js') }}"></script>
-		<script src="{{ url_for('bp.static', filename='js/highlight.min.js') }}"></script>
-		<script src="{{ url_for('bp.static', filename='js/highlightjs-copy.min.js') }}"></script>
-		<script src="{{ url_for('bp.static', filename='js/theme-toggler.js') }}"></script>
-		<script src="{{ url_for('bp.static', filename='js/sidebar-toggler.js') }}"></script>
-		<script src="{{ url_for('bp.static', filename='js/change-language.js') }}"></script>
-		<script src="{{ url_for('bp.static', filename='js/fullscreen-toggle.js') }}"></script>
-	</body>
+	</div>
+	<div class="footer_bottom">
+		<center>
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-lg-6 col-sm-7">
+						<p class="mb-0 f_400">© Y TẾ THÔNG MINH Inc. 2024 All rights reserved.</p>
+					</div>
+					<div class="col-lg-6 col-sm-5 text-right">
+						<p>Made with <i class="icon_heart"></i> in <a href="https://www.facebook.com/bin.map211" target="_blank">TAINGO</a></p>
+					</div>
+				</div>
+			</div>
+		</center>
+
+	</div>
+</footer>
 </html>

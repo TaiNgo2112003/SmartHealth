@@ -10,35 +10,53 @@
 	font-family: var(--font-1);
 }
 
+/* Theme Light */
 .theme-light {
-	--colour-1: #f5f5f5;
-	--colour-2: #000000;
-	--colour-3: #474747;
-	--colour-4: #949494;
-	--colour-5: #ebebeb;
-	--colour-6: #dadada;
-	--accent: #b97272;
-	--blur-bg: #ffffff;
-	--blur-border: 1px solid #dbdbdb57;
-	--blur-box-shadow: 2px 2px 2px #dbdbdb57;
-	--user-input: #282828;
-	--conversations: #666666;
+    --colour-1: #f5f5f5;
+    --colour-2: #000000;
+    --colour-3: #474747;
+    --colour-4: #949494;
+    --colour-5: #ebebeb;
+    --colour-6: #dadada;
+    --accent: #b97272;
+    --blur-bg: #ffffff;
+    --blur-border: 1px solid #dbdbdb57;
+    --blur-box-shadow: 2px 2px 2px #dbdbdb57;
+    --user-input: #282828;
+    --conversations: #666666;
+
+    /* Các biến mới cho footer */
+    --footer-bg: #ffffff; /* Màu nền cho footer trong theme-light */
+    --footer-text: #000000; /* Màu chữ cho footer trong theme-light */
+    --footer-text-light: #6a7695; /* Màu chữ nhạt cho footer trong theme-light */
+    --footer-social-hover-bg: #e0e0e0; /* Màu nền khi hover liên kết mạng xã hội trong theme-light */
+    --footer-social-hover-border: #e0e0e0; /* Màu viền khi hover liên kết mạng xã hội trong theme-light */
+    --footer-social-hover-color: #5e2ced; /* Màu chữ khi hover liên kết mạng xã hội trong theme-light */
 }
 
+/* Theme Dark */
 .theme-dark {
-	--colour-1: #181818;
-	--colour-2: #ccc;
-	--colour-3: #dadada;
-	--colour-4: #f0f0f0;
-	--colour-5: #181818;
-	--colour-6: #242424;
+    --colour-1: #181818;
+    --colour-2: #ccc;
+    --colour-3: #dadada;
+    --colour-4: #f0f0f0;
+    --colour-5: #181818;
+    --colour-6: #242424;
 
-	--accent: #151718;
-	--blur-bg: #242627;
-	--blur-border: 1px solid #47474757;
-	--blur-box-shadow: 2px 2px 2px #47474757;
-	--user-input: #f5f5f5;
-	--conversations: #555555;
+    --accent: #151718;
+    --blur-bg: #242627;
+    --blur-border: 1px solid #47474757;
+    --blur-box-shadow: 2px 2px 2px #47474757;
+    --user-input: #f5f5f5;
+    --conversations: #555555;
+
+    /* Các biến mới cho footer */
+    --footer-bg: #000000; /* Màu nền cho footer trong theme-dark */
+    --footer-text: #ffffff; /* Màu chữ cho footer trong theme-dark */
+    --footer-text-light: #7f88a6; /* Màu chữ nhạt cho footer trong theme-dark */
+    --footer-social-hover-bg: #5e2ced; /* Màu nền khi hover liên kết mạng xã hội trong theme-dark */
+    --footer-social-hover-border: #5e2ced; /* Màu viền khi hover liên kết mạng xã hội trong theme-dark */
+    --footer-social-hover-color: #ffffff; /* Màu chữ khi hover liên kết mạng xã hội trong theme-dark */
 }
 
 html,
